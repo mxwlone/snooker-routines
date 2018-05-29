@@ -186,29 +186,29 @@ public class TrainingSetActivity extends AppCompatActivity {
             // handle gui changes on result entered
 //            LinearLayout linearLayoutCurrentResultText = rootView.findViewById(R.id.linearLayoutCurrentResultText);
 //            EditText editTextCurrentResult = linearLayoutCurrentResultText.findViewWithTag();
-
-            EditText editTextCurrentResult = rootView.findViewById(R.id.editTextCurrentResult);
-            editTextCurrentResult.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    Toast.makeText(getContext(), "beforeTextChanged", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    Toast.makeText(getContext(), "onTextChanged", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    Toast.makeText(getContext(), "afterTextChanged", Toast.LENGTH_SHORT).show();
-
-//                    ContextCompat.getDrawable(getContext(), R.drawable.result_item);
-//                    LinearLayout linearLayoutResultItem = rootView.findViewById(R.id.linearLayoutResultItem);
-//                    ((LinearLayout) rootView.findViewById(R.id.linearLayoutResults)).addView(linearLayoutResultItem);
-
-                }
-            });
+//
+//            EditText editTextCurrentResult = rootView.findViewById(R.id.editTextCurrentResult);
+//            editTextCurrentResult.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                    Toast.makeText(getContext(), "beforeTextChanged", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                    Toast.makeText(getContext(), "onTextChanged", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable editable) {
+//                    Toast.makeText(getContext(), "afterTextChanged", Toast.LENGTH_SHORT).show();
+//
+////                    ContextCompat.getDrawable(getContext(), R.drawable.result_item);
+////                    LinearLayout linearLayoutResultItem = rootView.findViewById(R.id.linearLayoutResultItem);
+////                    ((LinearLayout) rootView.findViewById(R.id.linearLayoutResults)).addView(linearLayoutResultItem);
+//
+//                }
+//            });
 
 
             return rootView;
