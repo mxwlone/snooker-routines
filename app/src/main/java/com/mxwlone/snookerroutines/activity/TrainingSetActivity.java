@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,15 +64,17 @@ public class TrainingSetActivity extends AppCompatActivity {
         // show dialog which verifies the wish to finish the training set
         trainingSet.setActive(false);
 
-        // ORM tests
-        PracticeRoutineExecution.deleteAll(PracticeRoutineExecution.class);
-        PracticeRoutineExecution practiceRoutineExecution = new PracticeRoutineExecution(PracticeRoutines.getIdOfPracticeRoutine(PracticeRoutines.getAll().get(0)));
-        practiceRoutineExecution.addResult(10);
-        practiceRoutineExecution.save();
 
-        List<PracticeRoutineExecution> practiceRoutineExecution1 = PracticeRoutineExecution.find(PracticeRoutineExecution.class, "1 = 1");
-        Log.d("NAME", practiceRoutineExecution1.get(0).getPracticeRoutine().toString());
-        Log.d("DATE", practiceRoutineExecution1.get(0).getDate().toString());
+
+        // ORM tests
+//        PracticeRoutineExecution.deleteAll(PracticeRoutineExecution.class);
+//        PracticeRoutineExecution practiceRoutineExecution = new PracticeRoutineExecution(PracticeRoutines.getIdOfPracticeRoutine(PracticeRoutines.getAll().get(0)));
+//        practiceRoutineExecution.addResult(10);
+//        practiceRoutineExecution.save();
+//
+//        List<PracticeRoutineExecution> practiceRoutineExecution1 = PracticeRoutineExecution.find(PracticeRoutineExecution.class, "1 = 1");
+//        Log.d("NAME", practiceRoutineExecution1.get(0).getPracticeRoutine().toString());
+//        Log.d("DATE", practiceRoutineExecution1.get(0).getDate().toString());
 
         finish();
     }
@@ -197,32 +200,41 @@ public class TrainingSetActivity extends AppCompatActivity {
             }
 
             // handle gui changes on result entered
-//            LinearLayout linearLayoutCurrentResultText = rootView.findViewById(R.id.linearLayoutCurrentResultText);
-//            EditText editTextCurrentResult = linearLayoutCurrentResultText.findViewWithTag();
-//
-//            EditText editTextCurrentResult = rootView.findViewById(R.id.editTextCurrentResult);
-//            editTextCurrentResult.addTextChangedListener(new TextWatcher() {
-//                @Override
-//                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                    Toast.makeText(getContext(), "beforeTextChanged", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                @Override
-//                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                    Toast.makeText(getContext(), "onTextChanged", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                @Override
-//                public void afterTextChanged(Editable editable) {
-//                    Toast.makeText(getContext(), "afterTextChanged", Toast.LENGTH_SHORT).show();
-//
-////                    ContextCompat.getDrawable(getContext(), R.drawable.result_item);
-////                    LinearLayout linearLayoutResultItem = rootView.findViewById(R.id.linearLayoutResultItem);
-////                    ((LinearLayout) rootView.findViewById(R.id.linearLayoutResults)).addView(linearLayoutResultItem);
-//
-//                }
-//            });
+            EditText[] editTextResults = new EditText[] {
+                    rootView.findViewById(R.id.editTextResult1),
+                    rootView.findViewById(R.id.editTextResult2),
+                    rootView.findViewById(R.id.editTextResult3),
+                    rootView.findViewById(R.id.editTextResult4),
+                    rootView.findViewById(R.id.editTextResult5),
+            };
 
+            for (final EditText editText : editTextResults) {
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        String result = editText.getText().toString();
+                        if (TextUtils.isDigitsOnly(result) && !result.isEmpty()) {
+                            Log.d("EditText Result", editText.getText().toString());
+                            Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
+
+                            //TODO create/update PracticeRoutineExecution as soon as a result is entered and save to database
+                        }
+
+//                    ContextCompat.getDrawable(getContext(), R.drawable.result_item);
+//                    LinearLayout linearLayoutResultItem = rootView.findViewById(R.id.linearLayoutResultItem);
+//                    ((LinearLayout) rootView.findViewById(R.id.linearLayoutResults)).addView(linearLayoutResultItem);
+
+                    }
+                });
+            }
 
             return rootView;
         }
