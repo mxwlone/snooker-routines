@@ -8,50 +8,54 @@ import java.util.List;
 
 public final class PracticeRoutines {
 
-    private static PracticeRoutine TEMPLATE = new PracticeRoutine(
-            "",
-            Difficulty.BEGINNER,
-            new Tag[] {},
-            "",
-            ""
-    );
+/* Template
+            new PracticeRoutine(
+                    "",
+                    Difficulty.BEGINNER,
+                    new Tag[] {},
+                    "",
+                    ""
+            ),
+*/
 
     //region PracticeRoutine definitions
-
-    private static PracticeRoutine COLORS = new PracticeRoutine(
-            "Colors",
-            Difficulty.BEGINNER,
-            new Tag[] { Tag.POTTING, Tag.POSITIONAL_PLAY },
-            "Pot the colours in order. After black, return to yellow and continue the break.",
-            ""
-    );
-
-    private static PracticeRoutine TEN_REDS_WITHOUT_CUSHION = new PracticeRoutine(
-            "Ten reds without cushion",
-            Difficulty.EASY,
-            new Tag[] { Tag.POTTING, Tag.POSITIONAL_PLAY },
-            "Pot the reds without touching the cushion.",
-            ""
-    );
-
-    private static PracticeRoutine BLACK_ALL_THE_TIME = new PracticeRoutine(
-            "Black all the time",
-            Difficulty.EASY,
-            new Tag[] { Tag.POTTING },
-            "Pot the black and put it back on its spot. " +
-                    "Don't stop the exercise until you miss the black. \n" +
-                    "You must always start this exercise with the bridge on the cushion.",
-            ""
-    );
-
+    private static PracticeRoutine[] allPracticeRoutines = {
+            new PracticeRoutine(
+                    "Colors",
+                    Difficulty.BEGINNER,
+                    new Tag[] { Tag.POTTING, Tag.POSITIONAL_PLAY },
+                    "Pot the colours in order. After black, return to yellow and continue the break.",
+                    ""
+            ),
+            new PracticeRoutine(
+                    "Ten reds without cushion",
+                    Difficulty.EASY,
+                    new Tag[] { Tag.POTTING, Tag.POSITIONAL_PLAY },
+                    "Pot the reds without touching the cushion.",
+                    ""
+            ),
+            new PracticeRoutine(
+                    "Black all the time",
+                    Difficulty.EASY,
+                    new Tag[] { Tag.POTTING },
+                    "Pot the black and put it back on its spot. " +
+                            "Don't stop the exercise until you miss the black. \n" +
+                            "You must always start this exercise with the bridge on the cushion.",
+                    ""
+            )
+    };
     //endregion
 
-    private static PracticeRoutine[] allPracticeRoutines = {
-            COLORS, TEN_REDS_WITHOUT_CUSHION, BLACK_ALL_THE_TIME
-    };
-
-    private static List<PracticeRoutine> getAll() {
+    public static List<PracticeRoutine> getAll() {
         return Arrays.asList(allPracticeRoutines);
+    }
+
+    public static PracticeRoutine getById(int id) {
+        return getAll().get(id);
+    }
+
+    public static int getIdOfPracticeRoutine(PracticeRoutine practiceRoutine) {
+        return getAll().indexOf((PracticeRoutine) practiceRoutine);
     }
 
     public static List<PracticeRoutine> getAllByDifficulty(final Difficulty difficulty) {

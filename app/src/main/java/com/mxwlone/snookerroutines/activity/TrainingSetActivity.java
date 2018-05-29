@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 import com.mxwlone.snookerroutines.R;
 import com.mxwlone.snookerroutines.lib.PracticeRoutine;
+import com.mxwlone.snookerroutines.lib.PracticeRoutineExecution;
+import com.mxwlone.snookerroutines.lib.PracticeRoutines;
 import com.mxwlone.snookerroutines.lib.Tag;
 import com.mxwlone.snookerroutines.lib.TrainingSet;
 
@@ -60,6 +62,17 @@ public class TrainingSetActivity extends AppCompatActivity {
     public void onFinishButtonClick(View view) {
         // show dialog which verifies the wish to finish the training set
         trainingSet.setActive(false);
+
+        // ORM tests
+        PracticeRoutineExecution.deleteAll(PracticeRoutineExecution.class);
+        PracticeRoutineExecution practiceRoutineExecution = new PracticeRoutineExecution(PracticeRoutines.getIdOfPracticeRoutine(PracticeRoutines.getAll().get(0)));
+        practiceRoutineExecution.addResult(10);
+        practiceRoutineExecution.save();
+
+        List<PracticeRoutineExecution> practiceRoutineExecution1 = PracticeRoutineExecution.find(PracticeRoutineExecution.class, "1 = 1");
+        Log.d("NAME", practiceRoutineExecution1.get(0).getPracticeRoutine().toString());
+        Log.d("DATE", practiceRoutineExecution1.get(0).getDate().toString());
+
         finish();
     }
 

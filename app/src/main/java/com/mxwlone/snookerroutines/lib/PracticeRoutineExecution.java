@@ -1,22 +1,30 @@
 package com.mxwlone.snookerroutines.lib;
 
+import com.orm.SugarRecord;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-final class PracticeRoutineExecution {
-    private PracticeRoutine practiceRoutine;
+public final class PracticeRoutineExecution extends SugarRecord {
+    private int practiceRoutineId;
     private Date date;
     private List<Integer> results = new ArrayList<>();
-    private float averageResult;
 
-    public PracticeRoutineExecution(PracticeRoutine practiceRoutine) {
+    public PracticeRoutineExecution() {
+    }
+
+    public PracticeRoutineExecution(int practiceRoutineId) {
         this.date = new Date();
-        this.practiceRoutine = practiceRoutine;
+        this.practiceRoutineId = practiceRoutineId;
+    }
+
+    public int getPracticeRoutineId() {
+        return practiceRoutineId;
     }
 
     public PracticeRoutine getPracticeRoutine() {
-        return practiceRoutine;
+        return PracticeRoutines.getById(practiceRoutineId);
     }
 
     public Date getDate() {
