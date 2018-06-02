@@ -52,8 +52,7 @@ public class TrainingSetActivity extends AppCompatActivity {
         trainingSet.setActive(true);
 
         String trainingSetName = trainingSet.toString();
-
-        Log.d("training set name", trainingSet.toString());
+        Log.d("training set name", trainingSetName);
 
         Toolbar toolbar = setupToolbar();
 
@@ -189,6 +188,12 @@ public class TrainingSetActivity extends AppCompatActivity {
             final int index = args.getInt(INDEX);
             final PracticeRoutine practiceRoutine = (PracticeRoutine) args.getSerializable(PRACTICE_ROUTINE);
 
+            setUpGui(rootView, practiceRoutine);
+
+            return rootView;
+        }
+
+        private void setUpGui(View rootView, PracticeRoutine practiceRoutine) {
             ((TextView) rootView.findViewById(R.id.textViewPracticeRoutineName)).setText(practiceRoutine.toString());
             ((TextView) rootView.findViewById(R.id.textViewPracticeRoutineDescription)).setText(practiceRoutine.getDescription());
 
@@ -199,7 +204,10 @@ public class TrainingSetActivity extends AppCompatActivity {
                 linearLayoutTagArray.addView(t);
             }
 
-            // handle gui changes on result entered
+            setUpResultInputs(rootView);
+        }
+
+        private void setUpResultInputs(View rootView) {
             EditText[] editTextResults = new EditText[] {
                     rootView.findViewById(R.id.editTextResult1),
                     rootView.findViewById(R.id.editTextResult2),
@@ -235,8 +243,6 @@ public class TrainingSetActivity extends AppCompatActivity {
                     }
                 });
             }
-
-            return rootView;
         }
     }
 }
