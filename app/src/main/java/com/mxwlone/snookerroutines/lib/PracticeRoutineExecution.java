@@ -15,14 +15,14 @@ import java.util.List;
 public final class PracticeRoutineExecution extends SugarRecord {
     private int practiceRoutineId;
     private Date date;
-    private String results;
+    private String results = new JSONObject().toString();
 
     public PracticeRoutineExecution() {
     }
 
-    public PracticeRoutineExecution(int practiceRoutineId) {
+    public PracticeRoutineExecution(PracticeRoutine practiceRoutine) {
         this.date = new Date();
-        this.practiceRoutineId = practiceRoutineId;
+        this.practiceRoutineId = PracticeRoutines.getIdOfPracticeRoutine(practiceRoutine);
     }
 
     public int getPracticeRoutineId() {
@@ -41,6 +41,15 @@ public final class PracticeRoutineExecution extends SugarRecord {
         try {
             JSONObject jsonResults = new JSONObject(this.results);
             jsonResults.put(Integer.toString(index), result);
+        } catch (JSONException e) {
+            Log.e("ERROR", e.getMessage());
+        }
+    }
+
+    public void removeResult(int index) {
+        try {
+            JSONObject jsonResults = new JSONObject(this.results);
+            jsonResults.remove(Integer.toString(index));
         } catch (JSONException e) {
             Log.e("ERROR", e.getMessage());
         }

@@ -101,6 +101,7 @@
                     android:textAlignment="textStart" />
 
                 <EditText
+                    android:tag="1"
                     android:id="@+id/editTextResult1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -127,6 +128,7 @@
                     android:textAlignment="textStart" />
 
                 <EditText
+                    android:tag="2"
                     android:id="@+id/editTextResult2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -153,6 +155,7 @@
                     android:textAlignment="textStart" />
 
                 <EditText
+                    android:tag="3"
                     android:id="@+id/editTextResult3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -179,6 +182,7 @@
                     android:textAlignment="textStart" />
 
                 <EditText
+                    android:tag="4"
                     android:id="@+id/editTextResult4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -205,6 +209,7 @@
                     android:textAlignment="textStart" />
 
                 <EditText
+                    android:tag="5"
                     android:id="@+id/editTextResult5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

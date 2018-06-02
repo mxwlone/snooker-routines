@@ -66,14 +66,15 @@ public class TrainingSetActivity extends AppCompatActivity {
 
 
         // ORM tests
-//        PracticeRoutineExecution.deleteAll(PracticeRoutineExecution.class);
+        PracticeRoutineExecution.deleteAll(PracticeRoutineExecution.class);
 //        PracticeRoutineExecution practiceRoutineExecution = new PracticeRoutineExecution(PracticeRoutines.getIdOfPracticeRoutine(PracticeRoutines.getAll().get(0)));
 //        practiceRoutineExecution.addResult(10);
 //        practiceRoutineExecution.save();
 //
-//        List<PracticeRoutineExecution> practiceRoutineExecution1 = PracticeRoutineExecution.find(PracticeRoutineExecution.class, "1 = 1");
-//        Log.d("NAME", practiceRoutineExecution1.get(0).getPracticeRoutine().toString());
-//        Log.d("DATE", practiceRoutineExecution1.get(0).getDate().toString());
+        List<PracticeRoutineExecution> practiceRoutineExecution1 = PracticeRoutineExecution.find(PracticeRoutineExecution.class, "1 = 1");
+        Log.d("NAME", practiceRoutineExecution1.get(0).getPracticeRoutine().toString());
+        Log.d("DATE", practiceRoutineExecution1.get(0).getDate().toString());
+        Log.d("RESULTS", practiceRoutineExecution1.get(0).getResults().toString());
 
         finish();
     }
@@ -152,14 +153,10 @@ public class TrainingSetActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
     public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
+
+        private PracticeRoutineExecution practiceRoutineExecution;
+
         private static final String INDEX = "index";
         private static final String PRACTICE_ROUTINE = "practice_routine";
 
@@ -188,7 +185,13 @@ public class TrainingSetActivity extends AppCompatActivity {
             final int index = args.getInt(INDEX);
             final PracticeRoutine practiceRoutine = (PracticeRoutine) args.getSerializable(PRACTICE_ROUTINE);
 
+            if (practiceRoutine == null) {
+                return rootView;
+            }
+
             setUpGui(rootView, practiceRoutine);
+
+            practiceRoutineExecution = new PracticeRoutineExecution(practiceRoutine);
 
             return rootView;
         }
@@ -229,11 +232,16 @@ public class TrainingSetActivity extends AppCompatActivity {
                     @Override
                     public void afterTextChanged(Editable editable) {
                         String result = editText.getText().toString();
+                        Log.d("TAG", editText.getTag().toString());
+                        int resultIndex = Integer.parseInt(editText.getTag().toString());
                         if (TextUtils.isDigitsOnly(result) && !result.isEmpty()) {
                             Log.d("EditText Result", editText.getText().toString());
                             Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
 
-                            //TODO create/update PracticeRoutineExecution as soon as a result is entered and save to database
+                            practiceRoutineExecution.addResult(resultIndex, Integer.parseInt(result));
+                            practiceRoutineExecution.save();
+                        } else if (result.isEmpty()) {
+                            practiceRoutineExecution.removeResult(resultIndex);
                         }
 
 //                    ContextCompat.getDrawable(getContext(), R.drawable.result_item);
