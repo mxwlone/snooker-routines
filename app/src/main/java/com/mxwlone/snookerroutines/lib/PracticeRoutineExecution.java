@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 
 public final class PracticeRoutineExecution extends SugarRecord {
+    private final String TAG = this.getClass().getSimpleName();
+
     private int practiceRoutineId;
     private Date date;
     private String results = new JSONObject().toString();
@@ -38,6 +40,7 @@ public final class PracticeRoutineExecution extends SugarRecord {
     }
 
     public void addResult(int index, int result) {
+        Log.d(TAG, String.format("::: addResult(%d,%d)", index, result));
         try {
             JSONObject jsonResults = new JSONObject(this.results);
             jsonResults.put(Integer.toString(index), result);
@@ -47,6 +50,7 @@ public final class PracticeRoutineExecution extends SugarRecord {
     }
 
     public void removeResult(int index) {
+        Log.d(TAG, String.format("::: removeResult(%d)", index));
         try {
             JSONObject jsonResults = new JSONObject(this.results);
             jsonResults.remove(Integer.toString(index));

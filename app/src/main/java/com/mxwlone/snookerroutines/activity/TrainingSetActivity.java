@@ -36,10 +36,14 @@ import com.mxwlone.snookerroutines.lib.Tag;
 import com.mxwlone.snookerroutines.lib.TrainingSet;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class TrainingSetActivity extends AppCompatActivity {
 
+    private final String TAG = this.getClass().getSimpleName();
     private TrainingSet trainingSet = null;
 
     @Override
@@ -52,7 +56,11 @@ public class TrainingSetActivity extends AppCompatActivity {
         trainingSet.setActive(true);
 
         String trainingSetName = trainingSet.toString();
-        Log.d("training set name", trainingSetName);
+        Log.d(TAG, String.format("training set name: %s", trainingSetName));
+
+        PracticeRoutineExecution.deleteAll(PracticeRoutineExecution.class);
+        Log.d(TAG, String.format("Deleted all %s table entries",
+                PracticeRoutineExecution.class.getSimpleName()));
 
         Toolbar toolbar = setupToolbar();
 
@@ -63,18 +71,26 @@ public class TrainingSetActivity extends AppCompatActivity {
         // show dialog which verifies the wish to finish the training set
         trainingSet.setActive(false);
 
-
-
         // ORM tests
-        PracticeRoutineExecution.deleteAll(PracticeRoutineExecution.class);
+//        PracticeRoutineExecution.deleteAll(PracticeRoutineExecution.class);
 //        PracticeRoutineExecution practiceRoutineExecution = new PracticeRoutineExecution(PracticeRoutines.getIdOfPracticeRoutine(PracticeRoutines.getAll().get(0)));
 //        practiceRoutineExecution.addResult(10);
 //        practiceRoutineExecution.save();
-//
-        List<PracticeRoutineExecution> practiceRoutineExecution1 = PracticeRoutineExecution.find(PracticeRoutineExecution.class, "1 = 1");
-        Log.d("NAME", practiceRoutineExecution1.get(0).getPracticeRoutine().toString());
-        Log.d("DATE", practiceRoutineExecution1.get(0).getDate().toString());
-        Log.d("RESULTS", practiceRoutineExecution1.get(0).getResults().toString());
+
+        Iterator<PracticeRoutineExecution> practiceRoutineExecutions = PracticeRoutineExecution.findAll(PracticeRoutineExecution.class);
+
+        for (; practiceRoutineExecutions.hasNext(); ) {
+            PracticeRoutineExecution practiceRoutineExecution = practiceRoutineExecutions.next();
+//            Log.d(TAG, String.format("NAME: %s", practiceRoutineExecution.getPracticeRoutine().toString()));
+            Log.d(TAG, String.format("ID: %d", practiceRoutineExecution.getPracticeRoutineId()));
+            Log.d(TAG, String.format("DATE: %s", practiceRoutineExecution.getDate().toString()));
+            Log.d(TAG, String.format("RESULTS: %s", practiceRoutineExecution.getResults().toString()));
+        }
+
+//        List<PracticeRoutineExecution> practiceRoutineExecution1 = PracticeRoutineExecution.find(PracticeRoutineExecution.class, "1 = 1");
+//        Log.d("NAME", practiceRoutineExecution1.get(0).getPracticeRoutine().toString());
+//        Log.d("DATE", practiceRoutineExecution1.get(0).getDate().toString());
+//        Log.d("RESULTS", practiceRoutineExecution1.get(0).getResults().toString());
 
         finish();
     }
@@ -90,9 +106,11 @@ public class TrainingSetActivity extends AppCompatActivity {
     private void setupSpinner(final TrainingSet trainingSet, Toolbar toolbar) {
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         List<String> practiceRoutinesList = new ArrayList<>();
+
         for (PracticeRoutine practiceRoutine : trainingSet.getPracticeRoutines()) {
             practiceRoutinesList.add(practiceRoutine.toString());
         }
+
         spinner.setAdapter(new MyAdapter(
                 toolbar.getContext(),
                 practiceRoutinesList.toArray(new String[0])));
@@ -100,11 +118,10 @@ public class TrainingSetActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // When the given dropdown item is selected, show its contents in the
-                // container view.
+                int practiceRoutineId = PracticeRoutines.getIdOfPracticeRoutine(trainingSet.getPracticeRoutines().get(position));
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, PlaceholderFragment.newInstance(position,
-                                trainingSet.getPracticeRoutines().get(position)))
+                                practiceRoutineId))
                         .commit();
             }
 
@@ -157,8 +174,9 @@ public class TrainingSetActivity extends AppCompatActivity {
 
         private PracticeRoutineExecution practiceRoutineExecution;
 
+        private final String TAG = this.getClass().getSimpleName();
         private static final String INDEX = "index";
-        private static final String PRACTICE_ROUTINE = "practice_routine";
+        private static final String PRACTICE_ROUTINE_ID = "practice_routine_id";
 
         public PlaceholderFragment() {
         }
@@ -167,11 +185,11 @@ public class TrainingSetActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int index, PracticeRoutine practiceRoutine) {
+        public static PlaceholderFragment newInstance(int index, int practiceRoutineId) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(INDEX, index);
-            args.putSerializable(PRACTICE_ROUTINE, practiceRoutine);
+            args.putInt(PRACTICE_ROUTINE_ID, practiceRoutineId);
             fragment.setArguments(args);
             return fragment;
         }
@@ -183,7 +201,7 @@ public class TrainingSetActivity extends AppCompatActivity {
 
             Bundle args = getArguments();
             final int index = args.getInt(INDEX);
-            final PracticeRoutine practiceRoutine = (PracticeRoutine) args.getSerializable(PRACTICE_ROUTINE);
+            final PracticeRoutine practiceRoutine = PracticeRoutines.getById(args.getInt(PRACTICE_ROUTINE_ID));
 
             if (practiceRoutine == null) {
                 return rootView;
@@ -232,22 +250,19 @@ public class TrainingSetActivity extends AppCompatActivity {
                     @Override
                     public void afterTextChanged(Editable editable) {
                         String result = editText.getText().toString();
-                        Log.d("TAG", editText.getTag().toString());
                         int resultIndex = Integer.parseInt(editText.getTag().toString());
+                        Log.d(TAG, String.format("Result field: %d", resultIndex));
+
                         if (TextUtils.isDigitsOnly(result) && !result.isEmpty()) {
-                            Log.d("EditText Result", editText.getText().toString());
-                            Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, String.format("EditText Result: %s", result));
+//                            Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
 
                             practiceRoutineExecution.addResult(resultIndex, Integer.parseInt(result));
                             practiceRoutineExecution.save();
                         } else if (result.isEmpty()) {
                             practiceRoutineExecution.removeResult(resultIndex);
+                            practiceRoutineExecution.save();
                         }
-
-//                    ContextCompat.getDrawable(getContext(), R.drawable.result_item);
-//                    LinearLayout linearLayoutResultItem = rootView.findViewById(R.id.linearLayoutResultItem);
-//                    ((LinearLayout) rootView.findViewById(R.id.linearLayoutResults)).addView(linearLayoutResultItem);
-
                     }
                 });
             }

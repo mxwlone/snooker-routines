@@ -1,6 +1,7 @@
 package com.mxwlone.snookerroutines.lib;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,13 +10,18 @@ public final class TrainingSet implements Serializable {
 
     private String name;
     private int executions = 0;
-    private List<PracticeRoutine> practiceRoutines;
-    private boolean isActive = false;
+    private List<Integer> practiceRoutineIds;
+    private boolean active = false;
 
     public TrainingSet(String name, List<PracticeRoutine> practiceRoutines) {
         numberOfInstances++;
         this.name = name;
-        this.practiceRoutines = practiceRoutines;
+
+        this.practiceRoutineIds = new ArrayList<>();
+
+        for (PracticeRoutine practiceRoutine : practiceRoutines) {
+            this.practiceRoutineIds.add(PracticeRoutines.getIdOfPracticeRoutine(practiceRoutine));
+        }
     }
 
     public static int getNumberOfInstances() {
@@ -23,6 +29,12 @@ public final class TrainingSet implements Serializable {
     }
 
     public List<PracticeRoutine> getPracticeRoutines() {
+        List<PracticeRoutine> practiceRoutines = new ArrayList<>();
+
+        for (int practiceRoutineId : practiceRoutineIds) {
+            practiceRoutines.add(PracticeRoutines.getById(practiceRoutineId));
+        }
+
         return practiceRoutines;
     }
 
@@ -52,10 +64,10 @@ public final class TrainingSet implements Serializable {
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(boolean active) {
-        isActive = active;
+        this.active = active;
     }
 }

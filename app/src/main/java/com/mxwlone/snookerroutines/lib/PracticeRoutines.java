@@ -19,7 +19,7 @@ public final class PracticeRoutines {
 */
 
     //region PracticeRoutine definitions
-    private static PracticeRoutine[] allPracticeRoutines = {
+    private static PracticeRoutine[] practiceRoutines = {
             new PracticeRoutine(
                     "Colors",
                     Difficulty.BEGINNER,
@@ -47,7 +47,7 @@ public final class PracticeRoutines {
     //endregion
 
     public static List<PracticeRoutine> getAll() {
-        return Arrays.asList(allPracticeRoutines);
+        return Arrays.asList(practiceRoutines);
     }
 
     public static PracticeRoutine getById(int id) {
@@ -55,7 +55,7 @@ public final class PracticeRoutines {
     }
 
     public static int getIdOfPracticeRoutine(PracticeRoutine practiceRoutine) {
-        return getAll().indexOf((PracticeRoutine) practiceRoutine);
+        return getAll().indexOf(practiceRoutine);
     }
 
     public static List<PracticeRoutine> getAllByDifficulty(final Difficulty difficulty) {
@@ -81,7 +81,7 @@ public final class PracticeRoutines {
     }
 
     public static List<PracticeRoutine> getAllByTagArray(final Tag[] tags) {
-        List<PracticeRoutine> allExercisesAsList = Arrays.asList(allPracticeRoutines);
+        List<PracticeRoutine> allExercisesAsList = Arrays.asList(practiceRoutines);
 
         return filterList(allExercisesAsList, new Predicate<PracticeRoutine>() {
             @Override
