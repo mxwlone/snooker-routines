@@ -38,6 +38,10 @@ public final class TrainingSet implements Serializable {
         return practiceRoutines;
     }
 
+    public List<Integer> getPracticeRoutineIds() {
+        return this.practiceRoutineIds;
+    }
+
     public String getName() {
         return name;
     }

@@ -58,6 +58,7 @@ public class TrainingSetActivity extends AppCompatActivity {
         String trainingSetName = trainingSet.toString();
         Log.d(TAG, String.format("Training set name: %s", trainingSetName));
 
+        // TODO delete the next lines
         PracticeRoutineExecution.deleteAll(PracticeRoutineExecution.class);
         Log.d(TAG, String.format("Deleted all %s table entries",
                 PracticeRoutineExecution.class.getSimpleName()));
@@ -118,10 +119,9 @@ public class TrainingSetActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int practiceRoutineId = PracticeRoutines.getIdOfPracticeRoutine(trainingSet.getPracticeRoutines().get(position));
+                int practiceRoutineId = trainingSet.getPracticeRoutineIds().get(position);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, PlaceholderFragment.newInstance(position,
-                                practiceRoutineId))
+                        .replace(R.id.container, PlaceholderFragment.newInstance(position, practiceRoutineId))
                         .commit();
             }
 
