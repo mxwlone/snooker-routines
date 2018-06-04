@@ -56,7 +56,7 @@ public class TrainingSetActivity extends AppCompatActivity {
         trainingSet.setActive(true);
 
         String trainingSetName = trainingSet.toString();
-        Log.d(TAG, String.format("training set name: %s", trainingSetName));
+        Log.d(TAG, String.format("Training set name: %s", trainingSetName));
 
         PracticeRoutineExecution.deleteAll(PracticeRoutineExecution.class);
         Log.d(TAG, String.format("Deleted all %s table entries",
@@ -255,13 +255,16 @@ public class TrainingSetActivity extends AppCompatActivity {
 
                         if (TextUtils.isDigitsOnly(result) && !result.isEmpty()) {
                             Log.d(TAG, String.format("EditText Result: %s", result));
-//                            Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
-
                             practiceRoutineExecution.addResult(resultIndex, Integer.parseInt(result));
                             practiceRoutineExecution.save();
                         } else if (result.isEmpty()) {
                             practiceRoutineExecution.removeResult(resultIndex);
-                            practiceRoutineExecution.save();
+
+                            if (practiceRoutineExecution.isEmpty()) {
+                                practiceRoutineExecution.delete();
+                            } else {
+                                practiceRoutineExecution.save();
+                            }
                         }
                     }
                 });

@@ -19,7 +19,10 @@ public class ExampleUnitTest {
     @Test
     public void JSONTest() throws Exception {
         JSONObject jsonObject = new JSONObject();
+        System.out.println(jsonObject.length() == 0);
+
         jsonObject.put("1", 10);
+        System.out.println(jsonObject.length() == 0);
         jsonObject.put("1", 20);
         jsonObject.put("3", 20);
 

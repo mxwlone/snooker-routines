@@ -44,6 +44,7 @@ public final class PracticeRoutineExecution extends SugarRecord {
         try {
             JSONObject jsonResults = new JSONObject(this.results);
             jsonResults.put(Integer.toString(index), result);
+            this.results = jsonResults.toString();
         } catch (JSONException e) {
             Log.e("ERROR", e.getMessage());
         }
@@ -54,6 +55,7 @@ public final class PracticeRoutineExecution extends SugarRecord {
         try {
             JSONObject jsonResults = new JSONObject(this.results);
             jsonResults.remove(Integer.toString(index));
+            this.results = jsonResults.toString();
         } catch (JSONException e) {
             Log.e("ERROR", e.getMessage());
         }
@@ -70,7 +72,15 @@ public final class PracticeRoutineExecution extends SugarRecord {
     }
 
     public boolean isEmpty() {
-        return results.isEmpty();
+        JSONObject jsonResults;
+        try {
+            jsonResults = new JSONObject(this.results);
+        } catch (JSONException e) {
+            Log.e("ERROR", e.getMessage());
+            return true;
+        }
+
+        return jsonResults.length() == 0;
     }
 
     // TODO calculate average result of JSON results
