@@ -32,6 +32,9 @@ import com.mxwlone.snookerroutines.lib.PracticeRoutines;
 import com.mxwlone.snookerroutines.lib.Tag;
 import com.mxwlone.snookerroutines.lib.TrainingSet;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -221,6 +224,8 @@ public class TrainingSetActivity extends AppCompatActivity {
         }
 
         private void setUpResultInputs(View rootView, final PracticeRoutineExecution practiceRoutineExecution) {
+            setUpResultTexts(rootView, practiceRoutineExecution);
+
             EditText[] editTextResults = new EditText[] {
                     rootView.findViewById(R.id.editTextResult1),
                     rootView.findViewById(R.id.editTextResult2),
@@ -253,6 +258,30 @@ public class TrainingSetActivity extends AppCompatActivity {
                         }
                     }
                 });
+            }
+        }
+
+        private void setUpResultTexts(View rootView, PracticeRoutineExecution practiceRoutineExecution) {
+            JSONObject results = practiceRoutineExecution.getResults();
+
+            try {
+                if (results.has("1")) {
+                    ((EditText) rootView.findViewById(R.id.editTextResult1)).setText(results.get("1").toString());
+                }
+                if (results.has("2")) {
+                    ((EditText) rootView.findViewById(R.id.editTextResult2)).setText(results.get("2").toString());
+                }
+                if (results.has("3")) {
+                    ((EditText) rootView.findViewById(R.id.editTextResult3)).setText(results.get("3").toString());
+                }
+                if (results.has("4")) {
+                    ((EditText) rootView.findViewById(R.id.editTextResult4)).setText(results.get("4").toString());
+                }
+                if (results.has("5")) {
+                    ((EditText) rootView.findViewById(R.id.editTextResult5)).setText(results.get("5").toString());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }
