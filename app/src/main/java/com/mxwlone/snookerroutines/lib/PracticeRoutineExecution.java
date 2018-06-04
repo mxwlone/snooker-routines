@@ -8,22 +8,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public final class PracticeRoutineExecution extends SugarRecord {
+public final class PracticeRoutineExecution extends SugarRecord implements Serializable {
     private final String TAG = this.getClass().getSimpleName();
 
     private int practiceRoutineId;
-    private Date date;
+    private Date date = null;
     private String results = new JSONObject().toString();
 
     public PracticeRoutineExecution() {
     }
 
     public PracticeRoutineExecution(PracticeRoutine practiceRoutine) {
-        this.date = new Date();
         this.practiceRoutineId = PracticeRoutines.getIdOfPracticeRoutine(practiceRoutine);
     }
 
@@ -39,15 +39,26 @@ public final class PracticeRoutineExecution extends SugarRecord {
         return date;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public void addResult(int index, int result) {
         Log.d(TAG, String.format("::: addResult(%d,%d)", index, result));
         try {
             JSONObject jsonResults = new JSONObject(this.results);
+
+            if (isEmpty()) {
+                setDate(new Date());
+            }
+
             jsonResults.put(Integer.toString(index), result);
             this.results = jsonResults.toString();
         } catch (JSONException e) {
             Log.e("ERROR", e.getMessage());
         }
+
+        save();
     }
 
     public void removeResult(int index) {
@@ -58,6 +69,12 @@ public final class PracticeRoutineExecution extends SugarRecord {
             this.results = jsonResults.toString();
         } catch (JSONException e) {
             Log.e("ERROR", e.getMessage());
+        }
+
+        if (isEmpty()) {
+            delete();
+        } else {
+            save();
         }
     }
 

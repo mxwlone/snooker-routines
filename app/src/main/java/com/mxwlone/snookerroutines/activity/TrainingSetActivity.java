@@ -1,8 +1,6 @@
 package com.mxwlone.snookerroutines.activity;
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -26,7 +24,6 @@ import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.content.res.Resources.Theme;
 
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mxwlone.snookerroutines.R;
 import com.mxwlone.snookerroutines.lib.PracticeRoutine;
@@ -36,8 +33,7 @@ import com.mxwlone.snookerroutines.lib.Tag;
 import com.mxwlone.snookerroutines.lib.TrainingSet;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -68,6 +64,40 @@ public class TrainingSetActivity extends AppCompatActivity {
         setupSpinner(trainingSet, toolbar);
     }
 
+    private Toolbar setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        return toolbar;
+    }
+
+    private void setupSpinner(final TrainingSet trainingSet, Toolbar toolbar) {
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        List<String> practiceRoutinesList = new ArrayList<>();
+        final List<PracticeRoutineExecution> practiceRoutineExecutionList = new ArrayList<>();
+
+        for (PracticeRoutine practiceRoutine : trainingSet.getPracticeRoutines()) {
+            practiceRoutinesList.add(practiceRoutine.toString());
+            practiceRoutineExecutionList.add(new PracticeRoutineExecution(practiceRoutine));
+        }
+
+        spinner.setAdapter(new MyAdapter(toolbar.getContext(), practiceRoutinesList.toArray(new String[0])));
+
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, PlaceholderFragment.newInstance(position, practiceRoutineExecutionList.get(position)))
+                        .commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
     public void onFinishButtonClick(View view) {
         // show dialog which verifies the wish to finish the training set
         trainingSet.setActive(false);
@@ -94,41 +124,6 @@ public class TrainingSetActivity extends AppCompatActivity {
 //        Log.d("RESULTS", practiceRoutineExecution1.get(0).getResults().toString());
 
         finish();
-    }
-
-    private Toolbar setupToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        return toolbar;
-    }
-
-    private void setupSpinner(final TrainingSet trainingSet, Toolbar toolbar) {
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        List<String> practiceRoutinesList = new ArrayList<>();
-
-        for (PracticeRoutine practiceRoutine : trainingSet.getPracticeRoutines()) {
-            practiceRoutinesList.add(practiceRoutine.toString());
-        }
-
-        spinner.setAdapter(new MyAdapter(
-                toolbar.getContext(),
-                practiceRoutinesList.toArray(new String[0])));
-
-        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int practiceRoutineId = trainingSet.getPracticeRoutineIds().get(position);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, PlaceholderFragment.newInstance(position, practiceRoutineId))
-                        .commit();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
     }
 
 
@@ -172,11 +167,9 @@ public class TrainingSetActivity extends AppCompatActivity {
 
     public static class PlaceholderFragment extends Fragment {
 
-        private PracticeRoutineExecution practiceRoutineExecution;
-
         private final String TAG = this.getClass().getSimpleName();
         private static final String INDEX = "index";
-        private static final String PRACTICE_ROUTINE_ID = "practice_routine_id";
+        private static final String PRACTICE_ROUTINE_EXECUTION = "practice_routine_execution";
 
         public PlaceholderFragment() {
         }
@@ -185,11 +178,11 @@ public class TrainingSetActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int index, int practiceRoutineId) {
+        public static PlaceholderFragment newInstance(int index, PracticeRoutineExecution practiceRoutineExecution) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(INDEX, index);
-            args.putInt(PRACTICE_ROUTINE_ID, practiceRoutineId);
+            args.putSerializable(PRACTICE_ROUTINE_EXECUTION, practiceRoutineExecution);
             fragment.setArguments(args);
             return fragment;
         }
@@ -201,15 +194,16 @@ public class TrainingSetActivity extends AppCompatActivity {
 
             Bundle args = getArguments();
             final int index = args.getInt(INDEX);
-            final PracticeRoutine practiceRoutine = PracticeRoutines.getById(args.getInt(PRACTICE_ROUTINE_ID));
+            final PracticeRoutineExecution practiceRoutineExecution =
+                    (PracticeRoutineExecution) args.getSerializable(PRACTICE_ROUTINE_EXECUTION);
 
-            if (practiceRoutine == null) {
+            if (practiceRoutineExecution == null) {
                 return rootView;
             }
 
-            setUpGui(rootView, practiceRoutine);
+            setUpGui(rootView, practiceRoutineExecution.getPracticeRoutine());
 
-            practiceRoutineExecution = new PracticeRoutineExecution(practiceRoutine);
+            setUpResultInputs(rootView, practiceRoutineExecution);
 
             return rootView;
         }
@@ -224,11 +218,9 @@ public class TrainingSetActivity extends AppCompatActivity {
                 t.setText(tag.toString());
                 linearLayoutTagArray.addView(t);
             }
-
-            setUpResultInputs(rootView);
         }
 
-        private void setUpResultInputs(View rootView) {
+        private void setUpResultInputs(View rootView, final PracticeRoutineExecution practiceRoutineExecution) {
             EditText[] editTextResults = new EditText[] {
                     rootView.findViewById(R.id.editTextResult1),
                     rootView.findViewById(R.id.editTextResult2),
@@ -254,17 +246,10 @@ public class TrainingSetActivity extends AppCompatActivity {
                         Log.d(TAG, String.format("Result field: %d", resultIndex));
 
                         if (TextUtils.isDigitsOnly(result) && !result.isEmpty()) {
-                            Log.d(TAG, String.format("EditText Result: %s", result));
+                            Log.d(TAG, String.format("Result value: %s", result));
                             practiceRoutineExecution.addResult(resultIndex, Integer.parseInt(result));
-                            practiceRoutineExecution.save();
                         } else if (result.isEmpty()) {
                             practiceRoutineExecution.removeResult(resultIndex);
-
-                            if (practiceRoutineExecution.isEmpty()) {
-                                practiceRoutineExecution.delete();
-                            } else {
-                                practiceRoutineExecution.save();
-                            }
                         }
                     }
                 });
