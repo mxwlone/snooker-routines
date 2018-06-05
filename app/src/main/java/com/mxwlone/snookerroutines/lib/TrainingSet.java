@@ -54,15 +54,6 @@ public final class TrainingSet implements Serializable {
         this.executions = executions;
     }
 
-    public static List<TrainingSet> getDummyTrainingSets() {
-        TrainingSet firstDummyTrainingSet = new TrainingSet
-                ("Warm up", PracticeRoutines.getAllByDifficulty(Difficulty.BEGINNER));
-        TrainingSet secondDummyTrainingSet = new TrainingSet
-                ("Training", PracticeRoutines.getAllByDifficulty(Difficulty.EASY));
-
-        return Arrays.asList(firstDummyTrainingSet, secondDummyTrainingSet);
-    }
-
     public boolean isActive() {
         return active;
     }
