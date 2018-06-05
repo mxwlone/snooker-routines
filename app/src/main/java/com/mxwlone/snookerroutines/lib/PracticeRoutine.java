@@ -7,6 +7,7 @@ public final class PracticeRoutine implements Serializable {
     private String imageUrl;
     private String name;
     private String description;
+    private String scoring;
     private Difficulty difficulty;
     private Tag[] tags;
 
@@ -16,6 +17,10 @@ public final class PracticeRoutine implements Serializable {
         this.description = description;
         this.imageUrl = imageUrl;
         this.tags = tags;
+    }
+
+    public String getScoring() {
+        return scoring;
     }
 
     public String getImageUrl() {
