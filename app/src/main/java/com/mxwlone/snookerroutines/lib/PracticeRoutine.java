@@ -9,18 +9,26 @@ public final class PracticeRoutine implements Serializable {
     private String description;
     private String scoring;
     private Difficulty difficulty;
+    private Style style;
     private Tag[] tags;
 
-    PracticeRoutine(String name, Difficulty difficulty, Tag[] tags, String description, String imageUrl) {
+    PracticeRoutine(String name, Difficulty difficulty, Style style, Tag[] tags, String description,
+                    String scoring, String imageUrl) {
         this.name = name;
         this.difficulty = difficulty;
+        this.style = style;
         this.description = description;
+        this.scoring = scoring;
         this.imageUrl = imageUrl;
         this.tags = tags;
     }
 
     public String getScoring() {
         return scoring;
+    }
+
+    public Style getStyle() {
+        return style;
     }
 
     public String getImageUrl() {
