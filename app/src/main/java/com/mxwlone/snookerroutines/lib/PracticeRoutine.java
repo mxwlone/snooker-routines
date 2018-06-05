@@ -21,11 +21,12 @@ public final class PracticeRoutine implements Serializable {
         this.name = name;
         this.difficulty = difficulty;
         this.style = style;
-        this.description = description;
+        this.maxScore = maxScore;
+        this.description = style == Style.DISCRETE ?
+                String.format(description, maxScore) : description;
         this.scoringDescription = scoringDescription;
         this.imageUrl = imageUrl;
         this.tags = tags;
-        this.maxScore = maxScore;
 
         if (style == Style.CONTINUOUS && maxScore != Integer.MAX_VALUE) {
             Log.w(TAG, "Max score set for non-discrete practice routine!");
