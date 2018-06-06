@@ -1,12 +1,19 @@
 package com.mxwlone.snookerroutines.lib;
 
+import android.util.Log;
+
+import com.mxwlone.snookerroutines.util.MapUtil;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public final class TrainingSet implements Serializable {
+    private static final String TAG = PracticeRoutine.class.getSimpleName();
+
     private static int numberOfInstances;
 
     private String name;
@@ -68,8 +75,8 @@ public final class TrainingSet implements Serializable {
     }
 
     public List<Tag> getSortedTagList() {
-        List<Tag> sortedTagList = new ArrayList<>();
-        Map<Tag, Integer> tagCountMap = new HashMap<Tag, Integer>();
+        List<Tag> sortedTagList;
+        Map<Tag, Integer> tagCountMap = new HashMap<>();
 
         for (PracticeRoutine practiceRoutine : getPracticeRoutines()) {
             Tag[] practiceRoutineTagArray = practiceRoutine.getTags();
@@ -83,7 +90,11 @@ public final class TrainingSet implements Serializable {
             }
         }
 
+        tagCountMap = MapUtil.sortByValue(tagCountMap);
+        sortedTagList = new ArrayList<>(tagCountMap.keySet());
+        Collections.reverse(sortedTagList);
 
+        return sortedTagList;
     }
 }
 

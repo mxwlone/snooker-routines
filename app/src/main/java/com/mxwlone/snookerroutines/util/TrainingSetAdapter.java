@@ -16,6 +16,7 @@ import com.mxwlone.snookerroutines.lib.Tag;
 import com.mxwlone.snookerroutines.lib.TrainingSet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public final class TrainingSetAdapter extends ArrayAdapter {
@@ -67,7 +68,8 @@ public final class TrainingSetAdapter extends ArrayAdapter {
                 // todo count tags of all practice routines and sort by number of appearances
                 // minimal working example: show tags of first practice routine
                 if (linearLayoutTrainingSetTagArray.getChildCount() == 0) {
-                    for (Tag tag : trainingSet.getPracticeRoutines().get(0).getTags()) {
+                    List<Tag> sortedTagList = trainingSet.getSortedTagList();
+                    for (Tag tag : sortedTagList) {
                         TextView t = new TextView(getContext());
                         t.setText(tag.toString());
                         linearLayoutTrainingSetTagArray.addView(t);
