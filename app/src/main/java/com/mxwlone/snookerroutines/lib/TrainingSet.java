@@ -2,8 +2,9 @@ package com.mxwlone.snookerroutines.lib;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class TrainingSet implements Serializable {
     private static int numberOfInstances;
@@ -61,4 +62,24 @@ public final class TrainingSet implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public List<Tag> getSortedTagList() {
+        List<Tag> sortedTagList = new ArrayList<>();
+        Map<Tag, Integer> tagCountMap = new HashMap<Tag, Integer>();
+
+        for (PracticeRoutine practiceRoutine : getPracticeRoutines()) {
+            Tag[] practiceRoutineTagArray = practiceRoutine.getTags();
+
+            for (Tag tag : practiceRoutineTagArray) {
+                if (!tagCountMap.containsKey(tag)) {
+                    tagCountMap.put(tag, 1);
+                } else {
+                    tagCountMap.put(tag, tagCountMap.get(tag) + 1);
+                }
+            }
+        }
+
+
+    }
 }
+
