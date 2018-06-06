@@ -3,6 +3,7 @@ package com.mxwlone.snookerroutines.lib;
 import android.util.Log;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,10 +15,10 @@ import java.util.Date;
 import java.util.List;
 
 public final class PracticeRoutineExecution extends SugarRecord implements Serializable {
-    private final String TAG = this.getClass().getSimpleName();
+    private static final String TAG = PracticeRoutineExecution.class.getSimpleName();
 
     private int practiceRoutineId;
-    private Date date = null;
+    private Date date;
     private String results = new JSONObject().toString();
 
     public PracticeRoutineExecution() {

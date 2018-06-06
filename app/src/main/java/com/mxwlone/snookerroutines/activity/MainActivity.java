@@ -9,10 +9,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.mxwlone.snookerroutines.R;
+import com.mxwlone.snookerroutines.lib.Difficulty;
+import com.mxwlone.snookerroutines.lib.PracticeRoutines;
 import com.mxwlone.snookerroutines.lib.TrainingSet;
 import com.mxwlone.snookerroutines.util.TrainingSetAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         final ArrayList<TrainingSet> dummyTrainingSets = new ArrayList<>();
-        dummyTrainingSets.addAll(TrainingSet.getDummyTrainingSets());
+        dummyTrainingSets.addAll(getDummyTrainingSets());
         final ArrayAdapter trainingSetsArrayAdapter = new TrainingSetAdapter(this,
                 R.layout.list_item_training_set, dummyTrainingSets);
 
@@ -44,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
                 onTrainingSetClickListener(i, dummyTrainingSets);
             }
         });
+    }
+
+
+    public static List<TrainingSet> getDummyTrainingSets() {
+        TrainingSet firstDummyTrainingSet = new TrainingSet
+                ("Warm up", PracticeRoutines.getAllByDifficulty(Difficulty.EASY));
+        TrainingSet secondDummyTrainingSet = new TrainingSet
+                ("Training", PracticeRoutines.getAllByDifficulty(Difficulty.MEDIUM));
+
+        return Arrays.asList(firstDummyTrainingSet, secondDummyTrainingSet);
     }
 
     private void onTrainingSetClickListener(int i, ArrayList<TrainingSet> trainingSets) {

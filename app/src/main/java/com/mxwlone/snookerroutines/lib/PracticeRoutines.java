@@ -11,8 +11,10 @@ public final class PracticeRoutines {
 /* Template
             new PracticeRoutine(
                     "",
-                    Difficulty.BEGINNER,
+                    Style.,
+                    Difficulty.,
                     new Tag[] {},
+                    "",
                     "",
                     ""
             ),
@@ -20,29 +22,101 @@ public final class PracticeRoutines {
 
     //region PracticeRoutine definitions
     private static PracticeRoutine[] practiceRoutines = {
+            // region BEGINNER
+
+            // endregion
+            // region EASY
             new PracticeRoutine(
-                    "Colors",
-                    Difficulty.BEGINNER,
-                    new Tag[] { Tag.POTTING, Tag.POSITIONAL_PLAY },
-                    "Pot the colours in order. After black, return to yellow and continue the break.",
+                    "Black all the time",
+                    Difficulty.EASY,
+                    Style.DISCRETE,
+                    10,
+                    new Tag[] { Tag.POTTING },
+                    "Set up a simple shot on the black: less than half ball angle and " +
+                            "bridge on the table. Mark the spot of the white and play the shot. " +
+                            "Repeat the exact same shot %d times.\n" +
+                            "Play the next set from the other side of the table.",
+                    "Add one point for each potted ball",
+                    ""
+            ),
+            new PracticeRoutine(
+                    "Pink all the time",
+                    Difficulty.EASY,
+                    Style.DISCRETE,
+                    10,
+                    new Tag[] { Tag.POTTING },
+                    "Set up a simple shot on the pink: less than half ball angle and " +
+                            "bridge on the table. Mark the spot of the white and play the shot. " +
+                            "Repeat the exact same shot %d times.\n" +
+                            "Play the next set from the other side of the table.",
+                    "Add one point for each potted ball",
+                    ""
+            ),
+            new PracticeRoutine(
+                    "Blue all the time",
+                    Difficulty.EASY,
+                    Style.DISCRETE,
+                    10,
+                    new Tag[] { Tag.POTTING },
+                    "Set up a simple shot on the blue: less than half ball angle and " +
+                            "bridge on the table. Mark the spot of the white and play the shot. " +
+                            "Repeat the exact same shot %d times.\n" +
+                            "Play the next set from the other side of the table and vary the " +
+                            "angle and distance.",
+                    "Add one point for each potted ball",
                     ""
             ),
             new PracticeRoutine(
                     "Ten reds without cushion",
                     Difficulty.EASY,
+                    Style.CONTINUOUS,
+                    Integer.MAX_VALUE,
                     new Tag[] { Tag.POTTING, Tag.POSITIONAL_PLAY },
-                    "Pot the reds without touching the cushion.",
+                    "Pot the reds until you miss or hit the cushion. Respot all ten " +
+                            "reds after the last red was potted.",
+                    "Add one point for each potted ball",
+                    ""
+            ),
+            // endregion
+            // region MEDIUM
+            new PracticeRoutine(
+                    "Perfect stop shot",
+                    Difficulty.MEDIUM,
+                    Style.DISCRETE,
+                    5,
+                    new Tag[] { Tag.POSITIONAL_PLAY },
+                    "Set up a straight shot on the red into the middle pocket. " +
+                            "Mark the spot of the white and play a stop shot on the red. Repeat " +
+                            "the exact same shot %d times. The white must stop exactly where it " +
+                            "hits the red.\nPlay the next set from the other side of the table " +
+                            "and vary the distance between the white and the red.",
+                    "Add one point for each successful stop shot pot",
                     ""
             ),
             new PracticeRoutine(
-                    "Black all the time",
-                    Difficulty.EASY,
-                    new Tag[] { Tag.POTTING },
-                    "Pot the black and put it back on its spot. " +
-                            "Don't stop the exercise until you miss the black. \n" +
-                            "You must always start this exercise with the bridge on the cushion.",
+                    "Colors",
+                    Difficulty.MEDIUM,
+                    Style.DISCRETE,
+                    27,
+                    new Tag[] { Tag.POTTING, Tag.POSITIONAL_PLAY },
+                    "Pot the colours in order until you miss or pot the black.",
+                    "Sum up the values of the potted colors",
                     ""
-            )
+            ),
+            // endregion
+            // region HARD
+            new PracticeRoutine(
+                    "Colors all the time",
+                    Difficulty.HARD,
+                    Style.CONTINUOUS,
+                    Integer.MAX_VALUE,
+                    new Tag[] { Tag.POTTING, Tag.POSITIONAL_PLAY },
+                    "Pot the colors in order until you miss. After potting the black, " +
+                            "respot all colors and continue the break with the yellow on.",
+                    "Sum up the values of the potted colors",
+                    ""
+            ),
+            // endregion
     };
     //endregion
 
