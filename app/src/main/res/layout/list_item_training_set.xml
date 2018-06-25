@@ -35,7 +35,14 @@
         android:layout_below="@+id/textViewTrainingSetName"
         android:orientation="horizontal">
 
+        <RelativeLayout
+            android:id="@+id/relativeLayoutTrainingSetPracticeRoutines"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </RelativeLayout>
+
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/linearLayoutTrainingSetTags"

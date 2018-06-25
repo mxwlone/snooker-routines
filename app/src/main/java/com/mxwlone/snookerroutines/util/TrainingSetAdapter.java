@@ -5,11 +5,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mxwlone.snookerroutines.R;
@@ -48,6 +50,8 @@ public final class TrainingSetAdapter extends ArrayAdapter {
 //            TextView textViewTrainingSetExecutions = v.findViewById(R.id.textViewTrainingSetExecutions);
             LinearLayout linearLayoutTrainingSetPracticeRoutines =
                     v.findViewById(R.id.linearLayoutTrainingSetPracticeRoutines);
+            RelativeLayout relativeLayoutTrainingSetPracticeRoutines =
+                    v.findViewById(R.id.relativeLayoutTrainingSetPracticeRoutines);
             LinearLayout linearLayoutTrainingSetTags =
                     v.findViewById(R.id.linearLayoutTrainingSetTags);
 
@@ -65,8 +69,25 @@ public final class TrainingSetAdapter extends ArrayAdapter {
                         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         llp.setMargins(0, 0, 20, 0);
-                        t.setLayoutParams(llp);
-                        linearLayoutTrainingSetPracticeRoutines.addView(t);
+                        linearLayoutTrainingSetPracticeRoutines.addView(t, llp);
+                    }
+                }
+            }
+            if (relativeLayoutTrainingSetPracticeRoutines != null) {
+                if (relativeLayoutTrainingSetPracticeRoutines.getChildCount() == 0) {
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    View parentView = null;
+                    for (PracticeRoutine practiceRoutine : trainingSet.getPracticeRoutines()) {
+                        TextView t = new TextView(getContext());
+                        t.setText(practiceRoutine.toString());
+
+                        if (parentView != null) {
+                            lp.addRule(RelativeLayout.RIGHT_OF, parentView.getId());
+                        }
+
+                        parentView = t;
+                        relativeLayoutTrainingSetPracticeRoutines.addView(t, lp);
                     }
                 }
             }
