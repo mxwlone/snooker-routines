@@ -1,6 +1,8 @@
 package com.mxwlone.snookerroutines.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -43,11 +45,11 @@ public final class TrainingSetAdapter extends ArrayAdapter {
 
         if (trainingSet != null) {
             TextView textViewTrainingSetName = v.findViewById(R.id.textViewTrainingSetName);
-            TextView textViewTrainingSetExecutions = v.findViewById(R.id.textViewTrainingSetExecutions);
-            LinearLayout linearLayoutTrainingSetPracticeRoutineArray =
-                    v.findViewById(R.id.linearLayoutTrainingSetPracticeRoutineArray);
-            LinearLayout linearLayoutTrainingSetTagArray =
-                    v.findViewById(R.id.linearLayoutTrainingSetTagArray);
+//            TextView textViewTrainingSetExecutions = v.findViewById(R.id.textViewTrainingSetExecutions);
+            LinearLayout linearLayoutTrainingSetPracticeRoutines =
+                    v.findViewById(R.id.linearLayoutTrainingSetPracticeRoutines);
+            LinearLayout linearLayoutTrainingSetTags =
+                    v.findViewById(R.id.linearLayoutTrainingSetTags);
 
             if (textViewTrainingSetName != null) {
                 textViewTrainingSetName.setText(trainingSet.toString());
@@ -55,24 +57,33 @@ public final class TrainingSetAdapter extends ArrayAdapter {
 //            if (textViewTrainingSetExecutions != null) {
 //                textViewTrainingSetExecutions.setText(Integer.toString(trainingSet.getExecutions()));
 //            }
-            if (linearLayoutTrainingSetPracticeRoutineArray != null) {
-                if (linearLayoutTrainingSetPracticeRoutineArray.getChildCount() == 0) {
+            if (linearLayoutTrainingSetPracticeRoutines != null) {
+                if (linearLayoutTrainingSetPracticeRoutines.getChildCount() == 0) {
                     for (PracticeRoutine practiceRoutine : trainingSet.getPracticeRoutines()) {
                         TextView t = new TextView(getContext());
                         t.setText(practiceRoutine.toString());
-                        linearLayoutTrainingSetPracticeRoutineArray.addView(t);
+                        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        llp.setMargins(0, 0, 20, 0);
+                        t.setLayoutParams(llp);
+                        linearLayoutTrainingSetPracticeRoutines.addView(t);
                     }
                 }
             }
-            if (linearLayoutTrainingSetTagArray != null) {
-                // todo count tags of all practice routines and sort by number of appearances
-                // minimal working example: show tags of first practice routine
-                if (linearLayoutTrainingSetTagArray.getChildCount() == 0) {
+            if (linearLayoutTrainingSetTags != null) {
+                if (linearLayoutTrainingSetTags.getChildCount() == 0) {
                     List<Tag> sortedTagList = trainingSet.getSortedTagList();
                     for (Tag tag : sortedTagList) {
                         TextView t = new TextView(getContext());
                         t.setText(tag.toString());
-                        linearLayoutTrainingSetTagArray.addView(t);
+                        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        llp.setMargins(0, 0, 10, 0);
+                        t.setLayoutParams(llp);
+                        t.setPadding(10,2,10,2);
+                        t.setBackgroundResource(R.color.colorPrimary);
+                        t.setTextColor(Color.WHITE);
+                        linearLayoutTrainingSetTags.addView(t);
                     }
                 }
             }

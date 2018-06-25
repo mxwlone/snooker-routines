@@ -28,7 +28,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <LinearLayout
-        android:id="@+id/linearLayoutTrainingSetPracticeRoutineArray"
+        android:id="@+id/linearLayoutTrainingSetPracticeRoutines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textViewTrainingSetName"
@@ -38,12 +38,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutTrainingSetTagArray"
+        android:id="@+id/linearLayoutTrainingSetTags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="false"
         android:layout_alignStart="@+id/textViewTrainingSetName"
-        android:layout_below="@+id/linearLayoutTrainingSetPracticeRoutineArray"
+        android:layout_below="@+id/linearLayoutTrainingSetPracticeRoutines"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
